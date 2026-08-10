@@ -1,0 +1,9 @@
+[tools]
+lazygit = "latest"
+node = "lts"
+pnpm = "latest"
+usage = "latest"
+starship = "latest"
+bat = "latest"
+ripgrep = "latest"
+fd = "latest"
