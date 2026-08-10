@@ -8,8 +8,12 @@
 
 ### Add a tool
 
-`mise-add <tool>` — `mise use -g` + syncs the chezmoi source.
+`mise-add <tool>` - `mise use -g` + syncs the chezmoi source.
 Don't run `mise use -g` directly; chezmoi owns `config.toml` and will revert it.
+
+#### Add local tool
+
+`mise use -e local <tool>` - adds a local tool to `~/.config/mise/mise.local.toml`.
 
 ### Update
 
@@ -21,7 +25,7 @@ Don't run `mise use -g` directly; chezmoi owns `config.toml` and will revert it.
 
 ## Folders
 
-`~/.config/mise/config.local.toml` for machine specific unsynced tools - https://mise.jdx.dev/registry.html to check available tools
+`~/.config/mise/mise.local.toml` for machine specific unsynced tools - https://mise.jdx.dev/registry.html to check available tools
 
 ## Why not ...?
 
