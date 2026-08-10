@@ -1,0 +1,10 @@
+typeset -U path PATH
+
+if [[ -z ${HOMEBREW_PREFIX:-} ]]; then
+  for _brew in /opt/homebrew/bin/brew /usr/local/bin/brew; do
+    [[ -x $_brew ]] && eval "$("$_brew" shellenv)" && break
+  done
+  unset _brew
+fi
+
+path=("$HOME/.local/share/mise/shims" "$HOME/.local/bin" $path)
