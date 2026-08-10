@@ -40,6 +40,11 @@ gclone() {
   git clone -- "$url" "$dest" && cd "$dest"
 }
 
+# `mise use -g` writes to a chezmoi-managed file; sync it back to the source.
+mise-add() {
+  mise use -g "$@" && chezmoi re-add ~/.config/mise/config.toml
+}
+
 # command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init zsh --cmd cd)"
 command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init zsh)"
 # https://starship.rs/guide/#%F0%9F%9A%80-installation
