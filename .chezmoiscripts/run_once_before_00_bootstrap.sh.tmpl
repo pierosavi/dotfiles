@@ -3,15 +3,20 @@ set -euo pipefail
 
 echo "==> Starting Bootstrap Setup..."
 
+# Cache sudo up front and keep it alive. Homebrew's NONINTERACTIVE installer
+# uses `sudo -n`, so it fails outright if the timestamp expires mid-install.
+sudo -v
+while true; do sudo -n true; sleep 50; kill -0 "$$" 2>/dev/null || exit; done &
+
 # Essentials
 {{ if eq .chezmoi.os "darwin" }}
 echo "--> Checking Homebrew..."
 if ! command -v brew &> /dev/null; then
-  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-  eval "$(/opt/homebrew/bin/brew shellenv)"
+  NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
+eval "$(/opt/homebrew/bin/brew shellenv)"
 echo "--> Installing macOS essential tools..."
-brew install --quiet git curl
+brew install --quiet git
 {{ else if eq .chezmoi.os "linux" }}
 echo "--> Installing Fedora essential tools..."
 sudo dnf install -y git curl zsh util-linux-user
