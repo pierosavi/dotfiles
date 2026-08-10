@@ -1,0 +1,37 @@
+#!/bin/bash
+set -euo pipefail
+
+echo "==> Starting Bootstrap Setup..."
+
+# Essentials
+{{ if eq .chezmoi.os "darwin" }}
+echo "--> Checking Homebrew..."
+if ! command -v brew &> /dev/null; then
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
+echo "--> Installing macOS essential tools..."
+brew install --quiet git curl
+{{ else if eq .chezmoi.os "linux" }}
+echo "--> Installing Fedora essential tools..."
+sudo dnf install -y git curl zsh util-linux-user
+
+# Set Zsh as default shell on Fedora if it isn't already
+ZSH_PATH="$(which zsh)"
+USER_SHELL="$(getent passwd "$USER" | cut -d: -f7)"
+
+if [ "$(realpath "$USER_SHELL")" != "$(realpath "$ZSH_PATH")" ]; then
+  echo "--> Changing default shell to Zsh..."
+  sudo chsh -s "$ZSH_PATH" "$USER"
+else
+  echo "--> Default shell is already Zsh."
+fi
+{{ end }}
+
+# Standalone Mise Installation
+if [ ! -f "$HOME/.local/bin/mise" ]; then
+  echo "--> Installing Mise runtime manager..."
+  curl -fsSL https://mise.run | sh
+fi
+
+echo "==> Bootstrap complete!"
