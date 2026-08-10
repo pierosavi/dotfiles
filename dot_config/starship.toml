@@ -1,0 +1,16 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+add_newline = false
+
+[directory]
+truncation_length = 2
+truncate_to_repo = false    # Show parent folders even outside/above the Git repo root
+truncation_symbol = "…/"
+
+[git_status]
+ahead = '⇡${count}'
+behind = '⇣${count}'
+diverged = '⇕⇡${ahead_count}⇣${behind_count}'
+
+[python]
+format = 'via [$symbol]($style)'
