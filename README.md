@@ -4,7 +4,7 @@
 
 ### Init and apply
 
-`sh -c "$(curl -fsLS https://get.chezmoi.io)" -- init --apply pierosavi`
+`sh -c "$(curl -fsLS https://get.chezmoi.io/lb)" -- init --apply pierosavi`
 
 ### Add a tool
 
