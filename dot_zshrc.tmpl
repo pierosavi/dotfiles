@@ -46,6 +46,10 @@ mise-add() {
   mise use -g "$@" && chezmoi re-add ~/.config/mise/config.toml
 }
 
+up() {
+  chezmoi upgrade && mise self-update -y && chezmoi update && mise up
+}
+
 # command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init zsh --cmd cd)"
 command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init zsh)"
 # https://starship.rs/guide/#%F0%9F%9A%80-installation
