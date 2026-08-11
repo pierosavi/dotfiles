@@ -19,14 +19,29 @@ plugins=(
 {{- end }}
   aliases
   git
-  zsh-autosuggestions
   zsh-bat
   chezmoi
   mise
+  fzf-tab
+  zsh-autosuggestions
   zsh-syntax-highlighting
 )
 
 source $ZSH/oh-my-zsh.sh
+
+# fzf-tab replaces zsh's completion menu
+zstyle ':completion:*' menu no
+
+# tab to accept fzf selection
+zstyle ':fzf-tab:*' fzf-bindings 'tab:accept'
+
+# ^W to delete the whole shell word
+backward-kill-shell-word() {
+  local WORDCHARS='*?_-.[]~=/&;!#$%^(){}<>|@:,+'
+  zle backward-kill-word
+}
+zle -N backward-kill-shell-word
+bindkey '^W' backward-kill-shell-word
 
 # ~/Code/provider.com/username/repo
 gclone() {
@@ -52,5 +67,6 @@ up() {
 
 # command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init zsh --cmd cd)"
 command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init zsh)"
+command -v fzf >/dev/null 2>&1 && eval "$(fzf --zsh)"
 # https://starship.rs/guide/#%F0%9F%9A%80-installation
 command -v starship >/dev/null 2>&1 && eval "$(starship init zsh)"
