@@ -77,6 +77,10 @@ Don't run `mise use -g` directly; chezmoi owns `config.toml` and will revert it.
 
 `chezmoi add <file>`
 
+### Update the fonts
+
+Monaspace (Nerd Font build, all five families) is an external in `.chezmoiexternal.toml.tmpl`, pinned to a release. It has no `refreshPeriod` because a pinned URL never changes — bump the version by editing the URL.
+
 ## Folders
 
 `~/.config/mise/mise.local.toml` for machine specific unsynced tools - https://mise.jdx.dev/registry.html to check available tools
@@ -90,3 +94,9 @@ Casks are unreliable and break unexpectedly on linux.
 ### Nix
 
 Overkill
+
+### dnf / brew for CLI tools
+
+`lazygit`, `bat`, `ripgrep`, `fd`, `zoxide` and friends are static binaries from GitHub releases with no system integration. Splitting them out would mean a Brewfile *and* a dnf list *and* the drift between them.
+
+The boundary: **dnf/brew owns what's needed to get the shell running, mise owns what's used inside it.**

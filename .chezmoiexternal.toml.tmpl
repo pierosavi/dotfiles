@@ -1,3 +1,6 @@
+{{ $fonts := ".local/share/fonts/monaspace-nf" }}
+{{- if eq .chezmoi.os "darwin" }}{{ $fonts = "Library/Fonts" }}{{ end }}
+
 [".oh-my-zsh"]
     type = "archive"
     url = "https://github.com/ohmyzsh/ohmyzsh/archive/master.tar.gz"
@@ -21,3 +24,10 @@
     url = "https://github.com/fdellwing/zsh-bat/archive/master.tar.gz"
     stripComponents = 1
     refreshPeriod = "168h"
+
+# GitHub Monaspace, Nerd Font build
+# stripComponents flattens "NerdFonts/Monaspace <Family>/" because macOS does not scan subfolders of ~/Library/Fonts.
+["{{ $fonts }}"]
+    type = "archive"
+    url = "https://github.com/githubnext/monaspace/releases/download/v1.400/monaspace-nerdfonts-v1.400.zip"
+    stripComponents = 2
