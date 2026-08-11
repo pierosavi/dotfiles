@@ -1,10 +1,68 @@
 # Dotfiles
 
+Shared config for a Fedora desktop and a macOS laptop.
+`mise` owns every tool, so there is no Brewfile and no dnf package list to keep in sync.
+
+## Install
+
+Run the steps in order. `mise` must exist before `chezmoi init`, because applying
+the source runs `mise install`.
+
+### Fedora
+
+1. Prerequisites (`util-linux-user` provides `chsh`):
+
+   ```sh
+   sudo dnf install -y git curl zsh util-linux-user
+   ```
+
+2. Make Zsh the default shell, then **log out and back in**:
+
+   ```sh
+   chsh -s "$(command -v zsh)"
+   ```
+
+3. Install mise:
+
+   ```sh
+   curl -fsSL https://mise.run | sh
+   ```
+
+4. Install chezmoi and apply this repo:
+
+   ```sh
+   sh -c "$(curl -fsLS https://get.chezmoi.io/lb)" -- init --apply pierosavi
+   ```
+
+### macOS
+
+Zsh is already the default shell, so there is no `chsh` step.
+
+1. Command line tools (provides `git`):
+
+   ```sh
+   xcode-select --install
+   ```
+
+2. Homebrew — only for casks / GUI apps, no CLI tools:
+
+   ```sh
+   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+   ```
+
+3. Install mise:
+
+   ```sh
+   curl -fsSL https://mise.run | sh
+   ```
+
+4. Install chezmoi and apply this repo:
+
+   ```sh
+   sh -c "$(curl -fsLS https://get.chezmoi.io/lb)" -- init --apply pierosavi
+   ```
+
 ## Commands
-
-### Init and apply
-
-`sh -c "$(curl -fsLS https://get.chezmoi.io/lb)" -- init --apply pierosavi`
 
 ### Add a tool
 
@@ -14,10 +72,6 @@ Don't run `mise use -g` directly; chezmoi owns `config.toml` and will revert it.
 #### Add local tool
 
 `mise use -e local <tool>` - adds a local tool to `~/.config/mise/mise.local.toml`.
-
-### Update
-
-`chezmoi update`
 
 ### Add a new file
 
