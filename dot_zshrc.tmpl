@@ -61,6 +61,11 @@ mise-add() {
   mise use -g "$@" && chezmoi re-add ~/.config/mise/config.toml
 }
 
+# `mise use -e local` writes to the unsynced machine-specific config.
+mise-add-local() {
+  mise use -e local "$@"
+}
+
 up() {
   chezmoi upgrade && mise self-update -y && chezmoi update && mise up
 }
