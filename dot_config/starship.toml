@@ -14,3 +14,6 @@ diverged = '⇕⇡${ahead_count}⇣${behind_count}'
 
 [python]
 format = 'via [$symbol]($style)'
+
+[package]
+format = ''
