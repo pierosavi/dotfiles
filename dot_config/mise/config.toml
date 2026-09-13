@@ -1,3 +1,6 @@
+[settings.github]
+credential_command = 'gh auth token --hostname "$MISE_CREDENTIAL_HOST"'
+
 [tools]
 lazygit = "latest"
 node = "lts"
