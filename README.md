@@ -81,6 +81,14 @@ Don't run `mise use -g` directly; chezmoi owns `config.toml` and will revert it.
 
 Monaspace (Nerd Font build, all five families) is an external in `.chezmoiexternal.toml.tmpl`, pinned to a release. It has no `refreshPeriod` because a pinned URL never changes — bump the version by editing the URL.
 
+### bb plugins
+
+`.chezmoiscripts/run_after_20_bb-plugins.sh` installs or updates my bb plugins from
+[pierosavi/bb-plugins](https://github.com/pierosavi/bb-plugins) on every apply, so
+`chezmoi update` keeps them in sync. It needs bb running and `gh auth login` done.
+Plugins installed from a local path (the Mac, where I develop them) are skipped.
+To add a plugin, add its name to `PLUGINS` in the script.
+
 ## Folders
 
 `~/.config/mise/mise.local.toml` for machine specific unsynced tools - https://mise.jdx.dev/registry.html to check available tools
