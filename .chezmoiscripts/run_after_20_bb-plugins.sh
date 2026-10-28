@@ -15,6 +15,7 @@ PLUGINS=(
   md-list-continue
   pr-row-status
   report-back
+  row-branch
   shared-checkout
   title-guard
 )
