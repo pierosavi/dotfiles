@@ -1,23 +1,14 @@
 #!/usr/bin/env bash
-# Installs or updates my bb plugins from github.com/pierosavi/bb-plugins.
-# Runs on every apply, so `chezmoi update` pulls the latest plugins too.
-# Plugins installed from a local path (the machine I develop them on) are left alone.
+# Bootstraps bb settings sync: installs the settings-sync plugin from
+# github.com/pierosavi/bb-plugins. That plugin then installs, enables and
+# updates my other plugins and applies my bb settings from
+# ~/.config/bb/settings.json (see bb-plugin-settings-sync/README.md there).
+# A settings-sync installed from a local path (the machine I develop it on) is
+# left alone.
 set -uo pipefail
 export PATH="$HOME/.local/bin:$HOME/.bb/bin:$PATH"
 
 REPO="git:https://github.com/pierosavi/bb-plugins.git@main"
-PLUGINS=(
-  archive-confetti
-  archive-on-merge
-  branch-switcher
-  copilot-steer-guard
-  inbound-queue
-  md-list-continue
-  pr-row-status
-  report-back
-  shared-checkout
-  title-guard
-)
 
 if ! command -v bb >/dev/null 2>&1; then
   echo "bb-plugins: bb is not installed, skipping"
@@ -35,19 +26,9 @@ if [ -z "$(git config --global --get-all credential.https://github.com.helper)" 
     "!$HOME/.local/bin/mise exec gh -- gh auth git-credential"
 fi
 
-failed=0
-for id in "${PLUGINS[@]}"; do
-  if ! source=$(bb plugin source "$id" --json 2>/dev/null); then
-    echo "bb-plugins: installing $id"
-    bb plugin install "$REPO" --subdirectory "bb-plugin-$id" --yes >/dev/null || failed=1
-  elif grep -q '"resolved": "path:' <<<"$source"; then
-    continue
-  else
-    bb plugin update "$id" --yes >/dev/null || failed=1
-  fi
-done
-
-if [ "$failed" -ne 0 ]; then
-  echo "bb-plugins: some plugins failed; run 'bb plugin list' for details" >&2
+if ! bb plugin source settings-sync --json >/dev/null 2>&1; then
+  echo "bb-plugins: installing settings-sync"
+  bb plugin install "$REPO" --subdirectory bb-plugin-settings-sync --yes >/dev/null ||
+    echo "bb-plugins: settings-sync failed to install; run 'bb plugin list' for details" >&2
 fi
 exit 0
