@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Bootstraps bb settings sync: installs the settings-sync plugin from
-# github.com/pierosavi/bb-plugins. That plugin then installs, enables and
-# updates my other plugins and applies my bb settings from
-# ~/.config/bb/settings.json (see bb-plugin-settings-sync/README.md there).
+# github.com/pierosavi/bb-plugins. That plugin then syncs my other plugins and
+# bb settings with every machine through github.com/pierosavi/bb-settings
+# (see bb-plugin-settings-sync/README.md in bb-plugins).
 # A settings-sync installed from a local path (the machine I develop it on) is
 # left alone.
 set -uo pipefail
