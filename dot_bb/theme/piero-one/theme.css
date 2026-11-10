@@ -76,3 +76,272 @@
 html {
   font-size: 106.25%;
 }
+
+/* Phones: denser layout. bb enlarges its text tokens on coarse-pointer screens under 768px;
+   this brings them a step below desktop and shrinks the spacing unit (paddings, gaps, margins). */
+@media (width <= 767px) and (pointer: coarse) {
+  html {
+    font-size: 100%;
+  }
+
+  :root:root {
+    --spacing: 0.2rem;
+    --text-2xs: 0.625rem;
+    --text-2xs--line-height: 0.875rem;
+    --text-xs: 0.75rem;
+    --text-xs--line-height: 1rem;
+    --text-sm: 0.8125rem;
+    --text-sm--line-height: 1.25rem;
+    --text-base: 0.875rem;
+    --text-base--line-height: 1.375rem;
+    --text-lg: 1rem;
+    --text-lg--line-height: 1.5rem;
+    --bb-detail-row-icon-size: calc(var(--spacing) * 4);
+    --bb-app-chrome-row-height: 2.75rem;
+    --bb-panel-chrome-padding: 0.75rem;
+    --bb-sidebar-row-height-coarse: 2.125rem;
+    --bb-sidebar-rail-padding: 8px;
+    --bb-sidebar-sticky-stack-padding: 0.375rem;
+  }
+
+  /* Reading text: a touch larger and airier than the chrome, like a native chat. */
+  [data-message-column] [data-markdown-preview],
+  [data-message-column] [class*="bg-surface-recessed"] {
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+  [data-message-column] [data-markdown-preview] > p {
+    margin-bottom: 0.625rem;
+  }
+
+  /* iOS Safari zooms into any field under 16px on focus, so fields stay at 16px. */
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+  textarea,
+  select,
+  [contenteditable="true"] {
+    font-size: 16px;
+  }
+}
+
+/* Phones: native-app chrome in the spirit of T3 Code's mobile app. Floating round controls
+   instead of a toolbar, bubble-style user messages, a pill composer and hairline-separated lists. */
+@media (width <= 767px) and (pointer: coarse) {
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Header: no bar or rule; content fades out beneath it. */
+  header:has([data-testid="app-page-header-content-row"]) {
+    z-index: 20;
+    border-bottom-color: transparent;
+    background: var(--background);
+  }
+  header:has([data-testid="app-page-header-content-row"])::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    top: 100%;
+    height: 14px;
+    pointer-events: none;
+    background: linear-gradient(to bottom, var(--background), transparent);
+  }
+  header .bb-thread-title {
+    font-size: var(--text-base);
+    font-weight: 600;
+  }
+
+  /* Header controls become floating round buttons; the right-hand actions share one capsule. */
+  [data-testid="app-sidebar-trigger-overlay"] [data-sidebar="trigger"],
+  header [aria-label="Thread actions"] {
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 9999px;
+  }
+  [data-testid="app-sidebar-trigger-overlay"] [data-sidebar="trigger"],
+  [data-pane-content] > .fixed.z-40 > button[aria-label^="Show right panel"] {
+    border-radius: 9999px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.06);
+  }
+  [data-testid="app-page-header-content-row"] > div:last-child:has([data-thread-header-pane-actions]) {
+    height: 2.25rem;
+    padding-inline: 0.25rem;
+    gap: 0.125rem;
+    border: 1px solid var(--border);
+    border-radius: 9999px;
+    background: var(--card);
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.06);
+  }
+  [data-thread-header-pane-actions] {
+    margin-left: 0;
+  }
+  [data-thread-header-pane-actions] button,
+  [data-thread-header-workflow-actions] button {
+    width: 1.875rem;
+    height: 1.875rem;
+    border-radius: 9999px;
+  }
+
+  /* Your messages: soft borderless bubbles with a tail corner. */
+  [data-timeline-row-id*=":user"] .group\/message.ml-auto {
+    max-width: 82%;
+  }
+  [data-timeline-row-id*=":user"] .group\/message .rounded-xl.bg-surface-recessed {
+    border-color: transparent;
+    border-radius: 1.25rem 1.25rem 0.375rem 1.25rem;
+    background: color-mix(in oklch, var(--ink) 9%, var(--canvas));
+    padding: 0.625rem 0.875rem;
+  }
+
+  /* Composer: a floating pill while it's one line, a rounded sheet when it grows. */
+  [data-promptbox] {
+    border-radius: 1.5rem;
+    border-color: color-mix(in oklch, var(--ink) 10%, var(--canvas));
+    background: var(--card);
+    box-shadow: 0 8px 24px -12px rgb(0 0 0 / 0.25), 0 1px 2px rgb(0 0 0 / 0.06);
+  }
+  [data-promptbox][data-promptbox-compact]:not(:has([data-promptbox-editor-content] p + p)) {
+    border-radius: 9999px;
+  }
+  [data-promptbox] button {
+    border-radius: 9999px;
+  }
+
+  /* Home "Recent" list: inbox rows separated by hairlines. */
+  [data-root-compose-mobile-recents] li {
+    border-radius: 0;
+  }
+  [data-root-compose-mobile-recents] li + li {
+    border-top: 1px solid var(--border-hairline, var(--border));
+  }
+  [data-root-compose-mobile-recents] h2 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  [data-root-compose-mobile-recents] h2::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--border-hairline, var(--border));
+  }
+
+  /* Sidebar drawer: a quicker slide (bb's is 220ms). Page and backdrop move together. */
+  main[data-sidebar="inset"],
+  [data-sidebar-mobile-backdrop] {
+    transition-duration: 150ms;
+  }
+  [data-sidebar="panel"][data-side="left"] {
+    border-right-color: transparent;
+  }
+
+  /* One drawer surface: the icon rail blends in; the current section gets a tinted tile. */
+  [data-testid="sidebar-navigation-rail"],
+  [data-testid="sidebar-navigation-rail"] ~ div {
+    background: transparent;
+  }
+  [data-testid="app-nav-rail"] button,
+  [data-sidebar="panel"] button[aria-label^="Settings"] {
+    border-radius: 0.75rem;
+  }
+  [data-testid="app-nav-rail"] button[aria-current="page"],
+  [data-testid="app-nav-rail"] button[aria-pressed="true"] {
+    background: color-mix(in oklch, var(--primary) 16%, transparent);
+    color: var(--primary);
+  }
+
+  /* "New thread" reads as the drawer's main action. */
+  [data-sidebar-header-slot] button[aria-label^="New thread"] {
+    height: 2.25rem;
+    border-radius: 9999px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    font-weight: 500;
+  }
+  [data-testid="app-sidebar-top-reserve-row"] button[aria-label^="Go "] {
+    border-radius: 9999px;
+  }
+
+  /* Section labels and rows: grouped-list rhythm with comfortable touch targets. */
+  [data-sidebar="group-label"] {
+    font-weight: 500;
+    letter-spacing: 0.01em;
+  }
+  [data-sidebar-sticky-section] + [data-sidebar-sticky-section],
+  [data-sidebar-windowed-item]:has(> [data-sidebar-sticky-section]) + [data-sidebar-windowed-item]:has(> [data-sidebar-sticky-section]) {
+    margin-top: 0.25rem;
+  }
+  :root:root {
+    --bb-sidebar-row-height-coarse: 2.5rem;
+  }
+  [data-sidebar-rename-row].group\/thread-row {
+    border-radius: 0.75rem;
+  }
+  [data-sidebar-rename-row].group\/thread-row.bb-sidebar-selected-row {
+    background: color-mix(in oklch, var(--primary) 14%, var(--sidebar));
+  }
+  .dark [data-sidebar-rename-row].group\/thread-row.bb-sidebar-selected-row {
+    background: color-mix(in oklch, var(--primary) 22%, var(--sidebar));
+  }
+  .bb-sidebar-selected-row .bb-thread-title {
+    font-weight: 500;
+  }
+  [data-sidebar="group-label"] button,
+  .bb-sidebar-hover-actions-row button {
+    border-radius: 9999px;
+  }
+  /* Section titles collapse on tap: the chevron's hit area is stretched over the whole title.
+     Long-press still drags, since bb's touch drag listens for touchstart, which the chevron lets through.
+     (Double-tap to rename is lost here; renaming stays in the section's ... menu.) */
+  [data-sidebar="group-label"] button[data-sidebar-rename-anchor]:not([data-sidebar-trailing-controls] *) {
+    position: static;
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+  [data-sidebar="group-label"] button[data-sidebar-rename-anchor]:not([data-sidebar-trailing-controls] *)::before {
+    content: "";
+    position: absolute;
+    inset: -0.25rem 0 -0.25rem -0.5rem;
+  }
+  /* A transform would make the button the containing block and shrink the hit area mid-tap. */
+  [data-sidebar="group-label"] button[data-sidebar-rename-anchor]:not([data-sidebar-trailing-controls] *):active {
+    transform: none;
+  }
+
+  /* Footer shortcuts: round touch targets. */
+  [data-sidebar="footer"] [data-sidebar="menu-button"] {
+    width: 2rem;
+    height: 2rem;
+    justify-content: center;
+    border-radius: 9999px;
+  }
+
+  /* Bottom-sheet menus (long-press on a thread, etc.): action-sheet sized rows. */
+  [data-persistent-drawer-content] [role="menuitem"] {
+    min-height: 2.875rem;
+    padding: 0 0.875rem;
+    gap: 0.875rem;
+    font-size: 0.9375rem;
+    line-height: 1.25rem;
+    border-radius: 0.75rem;
+  }
+  [data-persistent-drawer-content] [role="menuitem"] svg {
+    width: 1.125rem;
+    height: 1.125rem;
+  }
+  [data-persistent-drawer-content] [role="menuitem"] svg[data-icon="ChevronRight"] {
+    width: 1rem;
+    height: 1rem;
+  }
+  [data-persistent-drawer-content] hr {
+    margin: 0.375rem 0.875rem;
+  }
+
+  /* Touch feedback: buttons dip instantly while pressed. */
+  @media (prefers-reduced-motion: no-preference) {
+    button:not(:disabled):active {
+      transform: scale(0.95);
+    }
+  }
+}
